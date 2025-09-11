@@ -19,6 +19,9 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    rules: {
+        indent: ["error", 4]
+    },
   },
 ];
 
