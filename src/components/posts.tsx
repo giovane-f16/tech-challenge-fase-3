@@ -19,16 +19,16 @@ const Posts = () => {
                 </h1>
 
                 <div className="space-y-12">
-                    {posts_provider.map((post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string }) => (
+                    {posts_provider.map((post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; }) => (
                         <article
                             key={post._id}
-                            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden"
+                            className="group rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden"
                         >
                             <div className="md:flex">
                                 <div className="md:w-1/3">
                                     <div className="relative w-full h-48 md:h-full overflow-hidden">
                                         <Image
-                                            src="/next.svg" // @toDo: Utiliza uma imagem melhor
+                                            src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
                                             alt={`Imagem do post ${post.titulo}`}
                                             layout="fill"
                                             objectFit="cover"
