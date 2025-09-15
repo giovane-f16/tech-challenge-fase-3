@@ -1,9 +1,18 @@
 import Image from "next/image";
 import PostProvider from "@/providers/post";
+import "@/app/globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
-const posts_provider = await PostProvider.getAll();
+export async function getServerSideProps() {
+    const posts_provider = await PostProvider.getAll();
 
-const Posts = () => {
+    return {
+        props: { posts_provider },
+    };
+}
+
+const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;
@@ -12,10 +21,12 @@ const Posts = () => {
     };
 
     return (
+        <>
+        <Header />
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
                 <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-12">
-                    Últimos Posts
+                    Posts mais recentes
                 </h1>
 
                 <div className="space-y-12">
@@ -39,13 +50,32 @@ const Posts = () => {
 
                                 <div className="p-6 md:w-2/3 flex flex-col justify-between">
                                     <div>
-                                        <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
-                                            <time dateTime={post.data_criacao}>{post.data_criacao}</time>
+                                        <div className="flex items-center justify-between space-x-2 text-sm text-gray-500 mb-2">
+                                            <time dateTime={post.data_criacao}>{post.data_criacao}
                                             {post.data_atualizacao != null && (
                                                 <span className="text-xs text-gray-400">
                                                     · Atualizado em {post.data_atualizacao}
                                                 </span>
                                             )}
+                                            </time>
+                                            <a href={`/posts/edit/${post._id}`} className="
+                                                  text-white
+                                                    self-end
+                                                    end-2.5
+                                                    bottom-2.5
+                                                  bg-blue-700
+                                                  hover:bg-blue-800
+                                                    focus:ring-4
+                                                    focus:outline-none
+                                                  focus:ring-blue-300
+                                                    font-medium rounded-lg
+                                                    text-sm px-4 py-2
+                                                  dark:bg-blue-600
+                                                  dark:hover:bg-blue-700
+                                                  dark:focus:ring-blue-800"
+                                                    >
+                                                Editar Post
+                                            </a>
                                         </div>
 
                                         <h2 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
@@ -71,7 +101,9 @@ const Posts = () => {
                 </div>
             </div>
         </div>
+        <Footer />
+        </>
     );
 }
 
-export default Posts;
+export default Edit;

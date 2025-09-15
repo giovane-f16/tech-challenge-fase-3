@@ -44,10 +44,11 @@ class Post {
         return data;
     }
 
-    public async editById(id: string, titulo?: string, conteudo?: string, autor?: string) {
+    public async editById(id: string, titulo?: string, conteudo?: string, autor?: string, thumbnail?: string) {
         if (titulo == undefined) titulo = "";
         if (conteudo == undefined) conteudo = "";
         if (autor == undefined) autor = "";
+        //if (thumbnail == undefined) thumbnail = ""; @toDo: corrigir na api
 
         const response = await fetch(`${this.config.getApiUrl()}posts/${id}`, {
             method: "PUT",
