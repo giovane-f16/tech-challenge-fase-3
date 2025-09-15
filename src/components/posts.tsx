@@ -49,7 +49,7 @@ const Posts = () => {
                                         </div>
 
                                         <h2 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
-                                            <a href="#">{post.titulo}</a>
+                                            <a href={`/posts/${PostProvider.slugify(post.titulo)}`}>{post.titulo}</a>
                                         </h2>
 
                                         <p className="text-gray-600 leading-relaxed mb-4">

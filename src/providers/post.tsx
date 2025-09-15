@@ -79,6 +79,15 @@ class Post {
         const data = await response.json();
         return data;
     }
+
+    public slugify(text: string) {
+        return text
+        .toLowerCase()
+        .normalize("NFD") // remove acentos
+        .replace(/[\u0300-\u036f]/g, "") // remove marcas diacríticas
+        .replace(/[^a-z0-9]+/g, "-") // troca espaços e caracteres por "-"
+        .replace(/(^-|-$)+/g, ""); // remove traços extras
+    }
 }
 
 export default new Post(Config);
