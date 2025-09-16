@@ -28,17 +28,38 @@ const Post = ({ post }: { post: any }) => {
     const [titulo, setTitulo] = useState(post.titulo || "");
     const [conteudo, setConteudo] = useState(post.conteudo || "");
     const [autor, setAutor] = useState(post.autor || "");
-    const [thumbnail, setThumbnail] = useState(post.thumbnail || "");
+    const [thumbnail, setThumbnail] = useState<string | File>(post.thumbnail || "");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!id) return;
-
+        let thumbnailUrl = post.thumbnail;
         try {
+            if (thumbnail instanceof File) {
+                console.log("➡️ Enviando nova imagem para a API de upload...");
+                const formData = new FormData();
+                formData.append("myImage", thumbnail); // 'myImage' é o nome que a API de upload espera
+
+                const uploadResponse = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const uploadData = await uploadResponse.json();
+
+                if (!uploadResponse.ok) {
+                    throw new Error(uploadData.message || "Erro ao fazer upload da imagem");
+                }
+
+                thumbnailUrl = uploadData.imageUrl; // Atualiza a URL com o caminho da nova imagem
+                console.log("✅ Imagem enviada com sucesso:", thumbnailUrl);
+            }
+
+            console.log("➡️ Salvando dados do post...");
             const response = await fetch(`/api/posts/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ titulo, conteudo, autor, thumbnail }),
+                body: JSON.stringify({ titulo, conteudo, autor, thumbnail: thumbnailUrl }),
             });
 
             if (!response.ok) throw new Error("Erro ao salvar o post");
@@ -52,52 +73,51 @@ const Post = ({ post }: { post: any }) => {
 
     // Efeito para thumbnail
     useEffect(() => {
-        const uploadBtn = document.getElementById("uploadImageBtn");
-        const featuredImage = document.getElementById("featuredImage") as HTMLInputElement;
-        const imagePreview = document.getElementById("imagePreview") as HTMLImageElement;
-        const imagePlaceholder = document.getElementById("imagePlaceholder");
-        const removeBtn = document.getElementById("removeImageBtn");
+            const uploadBtn = document.getElementById("uploadImageBtn");
+            const featuredImage = document.getElementById("featuredImage") as HTMLInputElement;
+            const imagePreview = document.getElementById("imagePreview") as HTMLImageElement;
+            const imagePlaceholder = document.getElementById("imagePlaceholder");
+            const removeBtn = document.getElementById("removeImageBtn");
 
-        if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn) return;
+            if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn) return;
 
-        // Abrir o file input
-        const handleUploadClick = () => featuredImage.click();
+            const handleUploadClick = () => featuredImage.click();
 
-        // Mostrar preview da imagem
-        const handleFileChange = (e: Event) => {
-            const file = (e.target as HTMLInputElement).files?.[0];
-            if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                imagePreview.src = event.target?.result as string;
-                imagePreview.classList.remove("hidden");
-                imagePlaceholder.classList.add("hidden");
-                removeBtn.classList.remove("hidden");
+            const handleFileChange = (e: Event) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (file) {
+                    setThumbnail(file);
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target?.result as string;
+                        imagePreview.classList.remove("hidden");
+                        if (imagePlaceholder) imagePlaceholder.classList.add("hidden");
+                        removeBtn.classList.remove("hidden");
+                    };
+                    reader.readAsDataURL(file);
+                }
             };
-            reader.readAsDataURL(file);
-            }
-        };
 
-        // Remover imagem
-        const handleRemoveClick = () => {
-            imagePreview.src = "";
-            imagePreview.classList.add("hidden");
-            imagePlaceholder.classList.remove("hidden");
-            removeBtn.classList.add("hidden");
-            featuredImage.value = "";
-        };
+            const handleRemoveClick = () => {
+                imagePreview.src = "";
+                imagePreview.classList.add("hidden");
+                if (imagePlaceholder) imagePlaceholder.classList.remove("hidden");
+                removeBtn.classList.add("hidden");
+                featuredImage.value = "";
+                setThumbnail(post.thumbnail || "");
+            };
 
-        uploadBtn.addEventListener("click", handleUploadClick);
-        featuredImage.addEventListener("change", handleFileChange);
-        removeBtn.addEventListener("click", handleRemoveClick);
+            uploadBtn.addEventListener("click", handleUploadClick);
+            featuredImage.addEventListener("change", handleFileChange);
+            removeBtn.addEventListener("click", handleRemoveClick);
 
-        // Cleanup
-        return () => {
-            uploadBtn.removeEventListener("click", handleUploadClick);
-            featuredImage.removeEventListener("change", handleFileChange);
-            removeBtn.removeEventListener("click", handleRemoveClick);
-        };
-    }, []);
+            // Cleanup
+            return () => {
+                uploadBtn.removeEventListener("click", handleUploadClick);
+                featuredImage.removeEventListener("change", handleFileChange);
+                removeBtn.removeEventListener("click", handleRemoveClick);
+            };
+    }, [post.thumbnail]);
 
     return (
         <>
@@ -133,7 +153,7 @@ const Post = ({ post }: { post: any }) => {
                                         }
                                     }}
                                     id="featuredImage"
-                                    name="featuredImage"
+                                    name="myImage"
                                     accept="image/*"
                                     className="hidden"
                                 />
@@ -160,11 +180,11 @@ const Post = ({ post }: { post: any }) => {
 
                         <div className="md:col-span-3 pt-4">
                             <div className="flex justify-between">
-                                <button type="button" id="deleteBtn" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                <button type="button" id="deleteBtn" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer">
                                     Excluir Post
                                 </button>
                                 <div className="space-x-3">
-                                    <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => console.log("➡️ cliquei no botão")}>
+                                    <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                                         Salvar Alterações
                                     </button>
                                 </div>
