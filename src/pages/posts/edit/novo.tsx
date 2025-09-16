@@ -1,73 +1,54 @@
-import PostProvider from "@/providers/post";
 import "@/app/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export async function getServerSideProps(context: any) {
-    const { id } = context.params;
+const Criar = () => {
+    const [titulo, setTitulo] = useState("");
+    const [conteudo, setConteudo] = useState("");
+    const [autor, setAutor] = useState("");
+    const [thumbnail, setThumbnail] = useState<string | File>("");
 
-    try {
-        const post = await PostProvider.getById(id);
-
-        return {
-            props: { post },
-        };
-    } catch (error) {
-        console.error("Erro ao buscar post:", error);
-        return {
-            notFound: true,
-        };
-    }
-}
-
-const Post = ({ post }: { post: any }) => {
-    const [id, setId] = useState(post._id || "");
-    const [titulo, setTitulo] = useState(post.titulo || "");
-    const [conteudo, setConteudo] = useState(post.conteudo || "");
-    const [autor, setAutor] = useState(post.autor || "");
-    const [thumbnail, setThumbnail] = useState<string | File>(post.thumbnail || "");
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!id) return;
 
-        let thumbnailUrl = post.thumbnail;
+        if (!(thumbnail instanceof File)) {
+            return;
+        }
 
+        let thumbnailUrl = "";
+        const formData = new FormData();
+        formData.append("myImage", thumbnail);
+
+        const uploadResponse = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+        });
+
+        const uploadData = await uploadResponse.json();
+
+        if (!uploadResponse.ok) {
+            throw new Error(uploadData.message || "Erro ao fazer upload da imagem");
+        }
+
+        thumbnailUrl = uploadData.imageUrl;
         try {
-            if (!(thumbnail instanceof File)) {
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("myImage", thumbnail);
-
-            const uploadResponse = await fetch("/api/upload", {
+            const response = await fetch(`/api/posts/create`, {
                 method: "POST",
-                body: formData,
-            });
-
-            const uploadData = await uploadResponse.json();
-
-            if (!uploadResponse.ok) {
-                throw new Error(uploadData.message || "Erro ao fazer upload da imagem");
-            }
-
-            thumbnailUrl = uploadData.imageUrl;
-            const response = await fetch(`/api/posts/${id}`, {
-                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ titulo, conteudo, autor, thumbnail: thumbnailUrl }),
             });
 
-            if (!response.ok) throw new Error("Erro ao salvar o post");
-
-            alert("Post atualizado com sucesso!");
-        } catch (err) {
-            alert("Erro ao salvar o post");
-            console.error(err);
+            if (!response.ok) throw new Error("Erro ao criar post");
+            const data = await response.json();
+            let id_novo_post = data._id;
+            alert("Post criado com sucesso!");
+            window.location.href = `/posts/edit/${id_novo_post}`;
+        } catch (error) {
+            console.error("Erro ao criar post:", error);
+            alert("Erro ao criar post");
         }
-    };
+    }
 
     // Efeito para thumbnail
     useEffect(() => {
@@ -80,7 +61,7 @@ const Post = ({ post }: { post: any }) => {
 
             if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn || !imagePreviewContainer) return;
 
-            if (post.thumbnail) {
+            if (thumbnail) {
                 console.log("➡️ Thumbnail encontrada, exibindo a imagem inicial.");
                 imagePreview.classList.remove("hidden");
                 imagePlaceholder.classList.add("hidden");
@@ -110,7 +91,7 @@ const Post = ({ post }: { post: any }) => {
                 if (imagePlaceholder) imagePlaceholder.classList.remove("hidden");
                 removeBtn.classList.add("hidden");
                 featuredImage.value = "";
-                setThumbnail(post.thumbnail || "");
+                setThumbnail(thumbnail || "");
             };
 
             uploadBtn.addEventListener("click", handleUploadClick);
@@ -125,36 +106,41 @@ const Post = ({ post }: { post: any }) => {
                 featuredImage.removeEventListener("change", handleFileChange);
                 removeBtn.removeEventListener("click", handleRemoveClick);
             };
-    }, [post.thumbnail]);
+    }, [thumbnail]);
 
     return (
         <>
         <Header />
         <div className="container mx-auto px-4 py-12 max-w-4xl">
             <div className="bg-white rounded-xl shadow-md overflow-hidden p-6" data-aos="fade-up">
-                <div className="flex items-center justify-between mb-6">
-                    <h1 className="text-2xl font-bold text-gray-800">Editar Post</h1>
-                    <a href="/posts/edit" className="text-indigo-600 hover:text-indigo-800 flex items-center">
-                        Voltar
-                    </a>
-                </div>
-
-                <form id="editPostForm" className="space-y-6 h-[950px]" onSubmit={handleSubmit}>
+                <form id="editPostForm" className="space-y-6 h-[975px]" onSubmit={handleCreate}>
+                    <div className="md:col-span-3 pt-4">
+                        <div className="flex justify-between">
+                            <h1 className="text-2xl font-bold text-gray-800">Criar novo Post</h1>
+                            <div className="space-x-3 flex">
+                                <a href="/posts/edit" className="text-indigo-600 hover:text-indigo-800 flex items-center">
+                                    Voltar
+                                </a>
+                                <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                                    Publicar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="md:col-span-3">
+                        <div className="md:col-span-3 mt-8">
                             <div className="flex items-center justify-between">
                                 <label htmlFor="featuredImage" className="block text-sm font-medium text-gray-700 mb-1">Imagem de destaque</label>
                                 <button type="button" id="removeImageBtn" className="text-sm text-red-600 hover:text-red-800 hidden cursor-pointer">Remover imagem</button>
                             </div>
                             <div className="mt-1 flex flex-col items-center">
                                 <div id="imagePreviewContainer" className="relative w-full h-82 bg-gray-100 rounded-lg overflow-hidden mb-2 border border-dashed border-gray-300 flex items-center justify-center">
-                                    <img id="imagePreview" src={post.thumbnail} alt="Preview" className="hidden absolute h-full w-full object-cover" />
+                                    <img id="imagePreview" src={thumbnail} alt="Preview" className="hidden absolute h-full w-full object-cover" />
                                     <div id="imagePlaceholder" className="text-center p-4">
                                         <p className="mt-2 text-sm text-gray-600">Clique para adicionar uma imagem</p>
                                     </div>
                                 </div>
-                                <input
-                                    type="file"
+                                <input type="file"
                                     onChange={(e) => {
                                         if (e.target.files && e.target.files[0]) {
                                             setThumbnail(e.target.files[0]);
@@ -185,19 +171,6 @@ const Post = ({ post }: { post: any }) => {
                             <label htmlFor="conteudo" className="block text-sm font-medium text-gray-700 mb-4">Conteúdo</label>
                             <textarea id="conteudo" name="conteudo" value={conteudo} onChange={(e) => setConteudo(e.target.value)} className="w-full h-48 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-indigo-500" placeholder="Digite o conteúdo do post"/>
                         </div>
-
-                        <div className="md:col-span-3 pt-4">
-                            <div className="flex justify-between">
-                                <button type="button" id="deleteBtn" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer">
-                                    Excluir Post
-                                </button>
-                                <div className="space-x-3">
-                                    <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                        Salvar Alterações
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -207,4 +180,4 @@ const Post = ({ post }: { post: any }) => {
     );
 }
 
-export default Post;
+export default Criar;

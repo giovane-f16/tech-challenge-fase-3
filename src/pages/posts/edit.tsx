@@ -28,8 +28,8 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                 <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-12">
                     Posts mais recentes
                 </h1>
-
-                <div className="space-y-12">
+                <div className="space-y-12 relative">
+                    <a href="/posts/edit/novo" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 fixed right-[25%] z-10">Criar Novo Post</a>
                     {posts_provider.map((post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; }) => (
                         <article
                             key={post._id}
@@ -41,9 +41,8 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                                         <Image
                                             src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
                                             alt={`Imagem do post ${post.titulo}`}
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className="transition-transform duration-500 ease-in-out group-hover:scale-105"
+                                            fill
+                                            className="transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover object-center"
                                         />
                                     </div>
                                 </div>
