@@ -79,8 +79,9 @@ const Post = ({ post }: { post: any }) => {
             const imagePreview = document.getElementById("imagePreview") as HTMLImageElement;
             const imagePlaceholder = document.getElementById("imagePlaceholder");
             const removeBtn = document.getElementById("removeImageBtn");
+            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
 
-            if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn) return;
+            if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn || !imagePreviewContainer) return;
 
             if (post.thumbnail) {
                 console.log("➡️ Thumbnail encontrada, exibindo a imagem inicial.");
@@ -116,12 +117,14 @@ const Post = ({ post }: { post: any }) => {
             };
 
             uploadBtn.addEventListener("click", handleUploadClick);
+            imagePreviewContainer.addEventListener("click", handleUploadClick);
             featuredImage.addEventListener("change", handleFileChange);
             removeBtn.addEventListener("click", handleRemoveClick);
 
             // Cleanup
             return () => {
                 uploadBtn.removeEventListener("click", handleUploadClick);
+                imagePreviewContainer.removeEventListener("click", handleUploadClick);
                 featuredImage.removeEventListener("change", handleFileChange);
                 removeBtn.removeEventListener("click", handleRemoveClick);
             };

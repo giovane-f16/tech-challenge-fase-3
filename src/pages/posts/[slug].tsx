@@ -29,8 +29,8 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
         <>
         <Header />
             <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-14">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">{post.titulo}</h1>
-                <div className="mb-6 relative w-full h-[600px] rounded-xl overflow-hidden">
+                <h1 className="text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
+                <div className="mb-6 relative w-full h-[700px] rounded-xl overflow-hidden">
                     <Image
                         src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
                         alt={`Thumbnail do post ${post.titulo}`}

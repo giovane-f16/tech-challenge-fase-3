@@ -30,9 +30,8 @@ const Posts = () => {
                                         <Image
                                             src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
                                             alt={`Imagem do post ${post.titulo}`}
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className="transition-transform duration-500 ease-in-out group-hover:scale-105"
+                                            fill
+                                            className="transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover object-center"
                                         />
                                     </div>
                                 </div>
