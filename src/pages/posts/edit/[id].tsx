@@ -2,6 +2,7 @@ import PostProvider from "@/providers/post";
 import "@/app/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import DeleteButton from "@/components/delete";
 import { useEffect, useState } from "react";
 
 export async function getServerSideProps(context: any) {
@@ -148,7 +149,7 @@ const Post = ({ post }: { post: any }) => {
                             </div>
                             <div className="mt-1 flex flex-col items-center">
                                 <div id="imagePreviewContainer" className="relative w-full h-82 bg-gray-100 rounded-lg overflow-hidden mb-2 border border-dashed border-gray-300 flex items-center justify-center">
-                                    <img id="imagePreview" src={post.thumbnail} alt="Preview" className="hidden absolute h-full w-full object-cover" />
+                                    <img id="imagePreview" src={thumbnail} alt="Preview" className="hidden absolute h-full w-full object-cover" />
                                     <div id="imagePlaceholder" className="text-center p-4">
                                         <p className="mt-2 text-sm text-gray-600">Clique para adicionar uma imagem</p>
                                     </div>
@@ -188,9 +189,7 @@ const Post = ({ post }: { post: any }) => {
 
                         <div className="md:col-span-3 pt-4">
                             <div className="flex justify-between">
-                                <button type="button" id="deleteBtn" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer">
-                                    Excluir Post
-                                </button>
+                                <DeleteButton id={id} />
                                 <div className="space-x-3">
                                     <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                                         Salvar Alterações

@@ -13,7 +13,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } catch (error) {
             return res.status(500).json({ error: "Erro ao atualizar post" });
         }
-  }
+    }
+
+    if (req.method === "DELETE") {
+        try {
+            await PostProvider.deleteById(id as string);
+            return res.status(204).end();
+        } catch (error) {
+            return res.status(500).json({ error: "Erro ao excluir post" });
+        }
+    }
 
   return res.status(405).json({ error: "Método não permitido" });
 }

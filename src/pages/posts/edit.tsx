@@ -3,6 +3,7 @@ import PostProvider from "@/providers/post";
 import "@/app/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import DeleteButton from "@/components/delete";
 
 export async function getServerSideProps() {
     const posts_provider = await PostProvider.getAll();
@@ -57,21 +58,27 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                                                 </span>
                                             )}
                                             </time>
-                                            <a href={`/posts/edit/${post._id}`} className="
-                                                  text-white
-                                                    self-end
-                                                    end-2.5
-                                                    bottom-2.5
-                                                  bg-blue-700
-                                                  hover:bg-blue-800
-                                                    font-medium rounded-lg
-                                                    text-sm px-4 py-2
-                                                  dark:bg-blue-600
-                                                  dark:hover:bg-blue-700
-                                                  dark:focus:ring-blue-800"
-                                                    >
-                                                Editar Post
-                                            </a>
+                                            <div className="flex space-x-2">
+                                                <DeleteButton id={post._id} />
+                                                <a href={`/posts/edit/${post._id}`} className="
+                                                    inline-flex
+                                                    items-center
+                                                    px-4 py-2 border
+                                                    border-transparent
+                                                    text-sm
+                                                    font-medium
+                                                    rounded-md
+                                                    shadow-sm
+                                                    text-white
+                                                    bg-blue-700
+                                                    hover:bg-blue-800
+                                                    dark:bg-blue-600
+                                                    dark:hover:bg-blue-700
+                                                    dark:focus:ring-blue-800"
+                                                >
+                                                    Editar
+                                                </a>
+                                            </div>
                                         </div>
 
                                         <h2 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
