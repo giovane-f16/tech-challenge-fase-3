@@ -21,7 +21,8 @@ function parseForm(req: NextApiRequest, uploadDir: string): Promise<{ fields: Fi
             uploadDir: uploadDir,
             keepExtensions: true,
             filename: (name, ext) => {
-                return `${name}-${Date.now()}${ext}`;
+                const sanitizedName = name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                return `${sanitizedName}-${Date.now()}${ext}`;
             },
         });
 

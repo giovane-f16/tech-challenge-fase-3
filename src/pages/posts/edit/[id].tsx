@@ -1,10 +1,8 @@
-import Image from "next/image";
 import PostProvider from "@/providers/post";
 import "@/app/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 
 export async function getServerSideProps(context: any) {
     const { id } = context.params;
@@ -56,6 +54,9 @@ const Post = ({ post }: { post: any }) => {
             }
 
             console.log("➡️ Salvando dados do post...");
+
+            console.log(JSON.stringify({ titulo, conteudo, autor, thumbnail: thumbnailUrl }));
+
             const response = await fetch(`/api/posts/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -80,6 +81,13 @@ const Post = ({ post }: { post: any }) => {
             const removeBtn = document.getElementById("removeImageBtn");
 
             if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn) return;
+
+            if (post.thumbnail) {
+                console.log("➡️ Thumbnail encontrada, exibindo a imagem inicial.");
+                imagePreview.classList.remove("hidden");
+                imagePlaceholder.classList.add("hidden");
+                removeBtn.classList.remove("hidden");
+            }
 
             const handleUploadClick = () => featuredImage.click();
 
