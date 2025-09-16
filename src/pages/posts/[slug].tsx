@@ -5,41 +5,51 @@ import "@/app/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
+const formatarData = (dataString: string) => {
+    const partes = dataString.split('/');
+    if (partes.length !== 3) {
+        return "Formato de data inválido";
+    }
+    const [dia, mes, ano] = partes.map(Number);
+    const dataObj = new Date(ano, mes - 1, dia);
+
+    if (isNaN(dataObj.getTime())) {
+        return "Data inválida";
+    }
+
+    return dataObj.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    });
+};
+
 const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; } }) => {
     return (
         <>
         <Header />
             <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-14">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">{post.titulo}</h1>
-                <div className="mb-6">
-                <Image
-                    src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
-                    alt={`Thumbnail do post ${post.titulo}`}
-                    width={1200}
-                    height={500}
-                    className="rounded-xl object-cover"
-                    priority
-                />
+                <div className="mb-6 relative w-full h-[600px] rounded-xl overflow-hidden">
+                    <Image
+                        src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
+                        alt={`Thumbnail do post ${post.titulo}`}
+                        fill
+                        className="rounded-xl object-cover object-center"
+                        priority
+                    />
                 </div>
 
                 <div className="text-1xl text-gray-900 mb-6">
                     <p>Por {post.autor} |
                         Publicado em{" "}
-                        {new Date(post.data_criacao).toLocaleDateString("pt-BR", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                        })}
+                        {formatarData(post.data_criacao)}
                     </p>
 
                     {post.data_atualizacao && (
                         <p className="mt-3">
                             Atualizado em{" "}
-                            {new Date(post.data_atualizacao).toLocaleDateString("pt-BR", {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                            })}
+                            {formatarData(post.data_atualizacao)}
                         </p>
                     )}
                 </div>
