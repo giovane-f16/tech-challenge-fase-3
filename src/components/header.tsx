@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 const Header = () => {
+    const { data: session, status } = useSession();
+
     useEffect(() => {
         const searchIconMobile = document.getElementById("searchIconMobile");
         const searchForm = document.querySelector("form");
@@ -23,8 +26,18 @@ const Header = () => {
         <header className="w-full bg-gray-900 text-white p-4 flex items-center justify-between">
             <a href="/" className="hover:underline">Blogging</a>
             <nav className="flex gap-4 items-center">
-                <a href="/login" className="hover:underline">Entrar</a>
-                <a href="/register" className="hover:underline">Cadastrar</a>
+                {session ? (
+                    <div className="flex gap-4">
+                        <span>Olá, Prof. {session.user?.name}!</span>
+                        <a href="/posts/edit" className="hover:underline">Editar Posts</a>
+                        <a href="/api/auth/signout" className="hover:underline">Deslogar</a>
+                    </div>
+                ) : (
+                    <>
+                    <a href="/login" className="hover:underline">Entrar</a>
+                    <a href="/register" className="hover:underline">Cadastrar</a>
+                    </>
+                )}
                 <form className="md:w-72 hidden md:block">
                     <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div className="relative">

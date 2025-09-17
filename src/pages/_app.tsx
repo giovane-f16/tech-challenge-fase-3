@@ -2,17 +2,18 @@ import type { AppProps } from "next/app";
 import "@/app/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import SessionProviderWrapper from "@/providers/session";
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (
-        <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow">
-                <Component {...pageProps} />
-            </main>
-            <Footer />
-        </div>
+        <SessionProviderWrapper>
+            <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-grow">
+                    <Component {...pageProps} />
+                </main>
+                <Footer />
+            </div>
+        </SessionProviderWrapper>
     );
 }
-
-export default MyApp;
