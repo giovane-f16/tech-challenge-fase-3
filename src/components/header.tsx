@@ -22,15 +22,25 @@ const Header = () => {
         })
     });
 
+    const handleLogout = () => {
+        if (!confirm("Deseja realmente sair?")) {
+            return;
+        }
+
+        signOut({ callbackUrl: "/" });
+    }
+
     return(
         <header className="w-full bg-gray-900 text-white p-4 flex items-center justify-between">
             <a href="/" className="hover:underline">Blogging</a>
             <nav className="flex gap-4 items-center">
                 {session ? (
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-center">
                         <span>Olá, Prof. {session.user?.name}!</span>
-                        <a href="/posts/edit" className="hover:underline">Editar Posts</a>
-                        <a href="/api/auth/signout" className="hover:underline">Deslogar</a>
+                        <a href="/posts/edit" className="bg-green-500 px-4 py-2 rounded cursor-pointer hover:bg-green-600">Editar Posts</a>
+                        <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 cursor-pointer">
+                            Sair
+                        </button>
                     </div>
                 ) : (
                     <>
