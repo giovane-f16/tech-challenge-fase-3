@@ -31,7 +31,7 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="flex flex-col gap-2 w-80 h-100">
                 <input
                     type="email"
-                    placeholder="Email"
+                    placeholder="E-mail"
                     value={loginEmail}
                     onChange={e => setLoginEmail(e.target.value)}
                     className="border p-2 rounded-lg"
@@ -45,7 +45,7 @@ export default function LoginPage() {
                 />
                 <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg">Entrar</button>
             </form>
-            <p>Não possui conta? Faça o seu <a href="/register" className="text-blue-700 hover:underline">cadastro!</a></p>
+            <p className="mb-7">Não possui conta? Faça o seu <a href="/register" className="text-blue-700 hover:underline">cadastro!</a></p>
         </div>
     );
 }
