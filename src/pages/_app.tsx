@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import "@/app/globals.css";
+import "@/styles/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SessionProviderWrapper from "@/providers/session";

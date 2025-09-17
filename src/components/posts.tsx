@@ -1,9 +1,7 @@
 import Image from "next/image";
 import PostProvider from "@/providers/post";
 
-const posts_provider = await PostProvider.getAll();
-
-const Posts = () => {
+const Posts = ({ posts_provider }: { posts_provider: any[] }) => {
     const truncateText = (text: string, maxLength: number) => {
         if (text.length <= maxLength) {
             return text;

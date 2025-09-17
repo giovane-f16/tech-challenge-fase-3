@@ -1,7 +1,6 @@
 import Posts from "@/providers/post";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
-import "@/app/globals.css";
 
 const formatarData = (dataString: string) => {
     const partes = dataString.split('/');

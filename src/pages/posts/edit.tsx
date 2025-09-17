@@ -1,6 +1,5 @@
 import Image from "next/image";
 import PostProvider from "@/providers/post";
-import "@/app/globals.css";
 import DeleteButton from "@/components/delete";
 
 export async function getServerSideProps() {
