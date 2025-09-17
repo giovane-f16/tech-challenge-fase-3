@@ -3,8 +3,8 @@ const Header = () => {
         <header className="w-full bg-gray-900 text-white p-4 flex items-center justify-between">
             <a href="/" className="hover:underline">Blogging</a>
             <nav className="flex gap-4 items-center">
-                <a href="#" className="hover:underline">Entrar</a>
-                <a href="#" className="hover:underline">Cadastrar</a>
+                <a href="/login" className="hover:underline">Entrar</a>
+                <a href="/register" className="hover:underline">Cadastrar</a>
                 <form className="max-w-xl mx-auto">
                     <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div className="relative">
