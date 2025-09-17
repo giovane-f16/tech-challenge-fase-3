@@ -28,7 +28,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex flex-col items-center mt-20">
+        <div className="flex flex-col items-center mt-[10%]">
             <h1 className="text-2xl mb-4">Cadastrar</h1>
             <form onSubmit={handleCadastro} className="flex flex-col gap-2 w-80 h-100">
                 <input
