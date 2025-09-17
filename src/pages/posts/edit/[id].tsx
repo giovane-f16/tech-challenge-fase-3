@@ -82,7 +82,6 @@ const Post = ({ post }: { post: any }) => {
             if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn || !imagePreviewContainer) return;
 
             if (post.thumbnail) {
-                console.log("➡️ Thumbnail encontrada, exibindo a imagem inicial.");
                 imagePreview.classList.remove("hidden");
                 imagePlaceholder.classList.add("hidden");
                 removeBtn.classList.remove("hidden");
