@@ -2,8 +2,6 @@ import Posts from "@/providers/post";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 import "@/app/globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 
 const formatarData = (dataString: string) => {
     const partes = dataString.split('/');
@@ -27,7 +25,6 @@ const formatarData = (dataString: string) => {
 const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; } }) => {
     return (
         <>
-        <Header />
             <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-14">
                 <h1 className="text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
                 <div className="mb-6 relative w-full h-[700px] rounded-xl overflow-hidden">
@@ -58,7 +55,6 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
                     <p className="text-2xl">{post.conteudo}</p>
                 </section>
             </article>
-        <Footer />
         </>
     );
 }

@@ -1,6 +1,4 @@
 import "@/app/globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import React, { useEffect, useState } from "react";
 
 const Criar = () => {
@@ -109,8 +107,6 @@ const Criar = () => {
     }, [thumbnail]);
 
     return (
-        <>
-        <Header />
         <div className="container mx-auto px-4 py-12 max-w-4xl">
             <div className="bg-white rounded-xl shadow-md overflow-hidden p-6" data-aos="fade-up">
                 <form id="editPostForm" className="space-y-6 h-[975px]" onSubmit={handleCreate}>
@@ -175,8 +171,6 @@ const Criar = () => {
                 </form>
             </div>
         </div>
-        <Footer />
-        </>
     );
 }
 

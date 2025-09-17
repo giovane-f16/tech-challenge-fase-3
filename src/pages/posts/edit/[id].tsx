@@ -1,7 +1,5 @@
 import PostProvider from "@/providers/post";
 import "@/app/globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import DeleteButton from "@/components/delete";
 import { useEffect, useState } from "react";
 
@@ -128,8 +126,6 @@ const Post = ({ post }: { post: any }) => {
     }, [post.thumbnail]);
 
     return (
-        <>
-        <Header />
         <div className="container mx-auto px-4 py-12 max-w-4xl">
             <div className="bg-white rounded-xl shadow-md overflow-hidden p-6" data-aos="fade-up">
                 <div className="flex items-center justify-between mb-6">
@@ -200,8 +196,6 @@ const Post = ({ post }: { post: any }) => {
                 </form>
             </div>
         </div>
-        <Footer />
-        </>
     );
 }
 
