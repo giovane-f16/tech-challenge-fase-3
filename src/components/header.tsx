@@ -41,8 +41,8 @@ const Header = () => {
                     </div>
                 ) : (
                     <>
-                    <a href="/login" className="hover:underline">Entrar</a>
-                    <a href="/register" className="hover:underline">Cadastrar</a>
+                    <a href="/login" className="py-2 hover:underline">Entrar</a>
+                    <a href="/register" className="py-2 hover:underline">Cadastrar</a>
                     </>
                 )}
                 <form className="md:w-72 hidden md:block">

@@ -154,6 +154,7 @@ const Post = ({ post }: { post: any }) => {
                             </div>
                             <div className="mt-1 flex flex-col items-center">
                                 <div id="imagePreviewContainer" className="relative w-full h-82 bg-gray-100 rounded-lg overflow-hidden mb-2 border border-dashed border-gray-300 flex items-center justify-center">
+                                    {/** @toDo: Corrigir bug da imagem na hora da edição */}
                                     <img id="imagePreview" src={thumbnail} alt="Preview" className="hidden absolute h-full w-full object-cover" />
                                     <div id="imagePlaceholder" className="text-center p-4">
                                         <p className="mt-2 text-sm text-gray-600">Clique para adicionar uma imagem</p>
