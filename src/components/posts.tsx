@@ -29,6 +29,8 @@ const Posts = ({ posts_provider }: { posts_provider: any[] }) => {
                                             src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
                                             alt={`Imagem do post ${post.titulo}`}
                                             fill
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            priority
                                             className="transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover object-center"
                                         />
                                     </div>

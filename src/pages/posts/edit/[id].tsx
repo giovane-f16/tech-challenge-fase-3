@@ -33,25 +33,24 @@ const Post = ({ post }: { post: any }) => {
         let thumbnailUrl = post.thumbnail;
 
         try {
-            if (!(thumbnail instanceof File)) {
-                return;
+            if (thumbnail instanceof File) {
+                const formData = new FormData();
+                formData.append("myImage", thumbnail);
+
+                const uploadResponse = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const uploadData = await uploadResponse.json();
+
+                if (!uploadResponse.ok) {
+                    throw new Error(uploadData.message || "Erro ao fazer upload da imagem");
+                }
+
+                thumbnailUrl = uploadData.imageUrl;
             }
 
-            const formData = new FormData();
-            formData.append("myImage", thumbnail);
-
-            const uploadResponse = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
-
-            const uploadData = await uploadResponse.json();
-
-            if (!uploadResponse.ok) {
-                throw new Error(uploadData.message || "Erro ao fazer upload da imagem");
-            }
-
-            thumbnailUrl = uploadData.imageUrl;
             const response = await fetch(`/api/posts/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },

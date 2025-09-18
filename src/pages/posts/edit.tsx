@@ -24,8 +24,21 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                 <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-12">
                     Posts mais recentes
                 </h1>
-                <div className="space-y-12 relative">
-                    <a href="/posts/edit/novo" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 fixed right-[25%] z-10">Criar Novo Post</a>
+                <div className="space-y-12 flex flex-col">
+                    <a href="/posts/edit/novo"
+                        className="
+                            text-white
+                            bg-blue-700
+                            hover:bg-blue-800
+                            focus:ring-4
+                            focus:ring-blue-300
+                            font-medium rounded-lg
+                            text-sm px-5 py-2.5 mb-4
+                            w-[50%] self-center
+                            dark:bg-blue-600 dark:hover:bg-blue-700
+                            focus:outline-none dark:focus:ring-blue-800">
+                        Criar Novo Post
+                    </a>
                     {posts_provider.map((post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; }) => (
                         <article
                             key={post._id}
@@ -43,13 +56,13 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                                     </div>
                                 </div>
 
-                                <div className="p-6 md:w-2/3 flex flex-col justify-between">
+                                <div className="p-4 md:p-6 md:w-2/3 flex flex-col justify-between">
                                     <div>
                                         <div className="flex items-center justify-between space-x-2 text-sm text-gray-500 mb-2">
                                             <time dateTime={post.data_criacao}>{post.data_criacao}
                                             {post.data_atualizacao != null && (
-                                                <span className="text-xs text-gray-400">
-                                                    · Atualizado em {post.data_atualizacao}
+                                                <span className="text-xs text-gray-400 block md:inline">
+                                                · Atualizado em {post.data_atualizacao}
                                                 </span>
                                             )}
                                             </time>

@@ -110,8 +110,8 @@ const Criar = () => {
             <div className="bg-white rounded-xl shadow-md overflow-hidden p-6" data-aos="fade-up">
                 <form id="editPostForm" className="space-y-6 h-[975px]" onSubmit={handleCreate}>
                     <div className="md:col-span-3 pt-4">
-                        <div className="flex justify-between">
-                            <h1 className="text-2xl font-bold text-gray-800">Criar novo Post</h1>
+                        <div className="flex justify-between items-center">
+                            <h1 className="md:text-2xl font-bold text-gray-800">Criar novo Post</h1>
                             <div className="space-x-3 flex">
                                 <a href="/posts/edit" className="text-indigo-600 hover:text-indigo-800 flex items-center">
                                     Voltar
@@ -123,8 +123,8 @@ const Criar = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="md:col-span-3 mt-8">
-                            <div className="flex items-center justify-between">
+                        <div className="md:col-span-3 mt-4 md:mt-8">
+                            <div className="flex items-center justify-between mb-4">
                                 <label htmlFor="featuredImage" className="block text-sm font-medium text-gray-700 mb-1">Imagem de destaque</label>
                                 <button type="button" id="removeImageBtn" className="text-sm text-red-600 hover:text-red-800 hidden cursor-pointer">Remover imagem</button>
                             </div>

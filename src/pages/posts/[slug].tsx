@@ -24,9 +24,9 @@ const formatarData = (dataString: string) => {
 const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; } }) => {
     return (
         <>
-            <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-14">
-                <h1 className="text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
-                <div className="mb-6 relative w-full h-[700px] rounded-xl overflow-hidden">
+            <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-7 md:p-14">
+                <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
+                <div className="mb-6 relative w-full h-[300px] md:h-[700px] rounded-xl overflow-hidden">
                     <Image
                         src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
                         alt={`Thumbnail do post ${post.titulo}`}
@@ -51,7 +51,7 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
                 </div>
 
                 <section className="mt-6">
-                    <p className="text-2xl">{post.conteudo}</p>
+                    <p className="text-base md:text-2xl">{post.conteudo}</p>
                 </section>
             </article>
         </>
