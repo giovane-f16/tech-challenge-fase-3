@@ -1,6 +1,7 @@
 import PostProvider from "@/providers/post";
 import DeleteButton from "@/components/delete";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export async function getServerSideProps(context: any) {
     const { id } = context.params;
@@ -122,6 +123,17 @@ const Post = ({ post }: { post: any }) => {
                 removeBtn.removeEventListener("click", handleRemoveClick);
             };
     }, [post.thumbnail]);
+
+    const { data: session } = useSession();
+
+    if (!session) {
+        return (
+            <div className="text-xl flex flex-col justify-center items-center mt-[10%]">
+                <h1 className="">Sem permissão para acessar essa página.</h1>
+                <p>Faça o <a href="/login" className="text-blue-700 hover:underline">login</a> ou <a href="/register" className="text-blue-700 hover:underline">cadastre-se!</a></p>
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">

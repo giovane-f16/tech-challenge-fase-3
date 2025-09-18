@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 
 const Header = () => {

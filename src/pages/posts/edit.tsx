@@ -1,10 +1,10 @@
 import Image from "next/image";
 import PostProvider from "@/providers/post";
 import DeleteButton from "@/components/delete";
+import { useSession } from "next-auth/react";
 
 export async function getServerSideProps() {
     const posts_provider = await PostProvider.getAll();
-
     return {
         props: { posts_provider },
     };
@@ -18,6 +18,34 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
         return text.substring(0, maxLength) + "...";
     };
 
+    const { data: session } = useSession();
+
+    if (!session) {
+        return (
+            <div className="flex flex-col text-xl overflow-hidden">
+                <div className="flex flex-col justify-center items-center mt-48">
+                    <h1>Sem permissão para acessar essa página.</h1>
+                    <p>
+                    Faça o{" "}
+                    <a href="/login" className="text-blue-700 hover:underline">login</a> ou{" "}
+                    <a href="/register" className="text-blue-700 hover:underline">cadastre-se!</a>
+                    </p>
+                </div>
+
+                <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
+                    <Image
+                    src="/not-allowed.svg"
+                    alt="Imagem Not Allowed"
+                    fill
+                    priority
+                    sizes="500px"
+                    className="object-contain object-center"
+                    />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
@@ -26,8 +54,7 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                 </h1>
                 <div className="space-y-12 flex flex-col">
                     <a href="/posts/edit/novo"
-                        className="
-                            text-white
+                        className="text-white
                             bg-blue-700
                             hover:bg-blue-800
                             focus:ring-4
