@@ -11,13 +11,6 @@ export async function getServerSideProps() {
 }
 
 const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
-    const truncateText = (text: string, maxLength: number) => {
-        if (text.length <= maxLength) {
-            return text;
-        }
-        return text.substring(0, maxLength) + "...";
-    };
-
     const { data: session } = useSession();
 
     if (!session) {
@@ -68,7 +61,7 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                             </a>
                         </div>
                         <a href={`/posts/${PostProvider.slugify(post.titulo)}`}>
-                            <p className="text-gray-600 mb-4">{truncateText(post.conteudo, 50)}</p>
+                            <p className="text-gray-600 mb-4">{PostProvider.truncateText(post.conteudo, 50)}</p>
                         </a>
                         <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-500">Publicado em: {post.data_criacao}</span>

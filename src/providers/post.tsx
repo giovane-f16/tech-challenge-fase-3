@@ -26,7 +26,7 @@ class Post {
     }
 
     public async getBySearch(search: string) {
-        const response = await fetch(`${this.config.getApiUrl()}/posts/search?titulo=${search}&conteudo=${search}&autor=${search}`);
+        const response = await fetch(`${this.config.getApiUrl()}/posts/search?titulo=${search}&conteudo=${search}`);
         const data = await response.json();
         return data;
     }
@@ -90,6 +90,13 @@ class Post {
         .replace(/[^a-z0-9]+/g, "-") // troca espaços e caracteres por "-"
         .replace(/(^-|-$)+/g, ""); // remove traços extras
     }
+
+    public truncateText = (text: string, maxLength: number) => {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + "...";
+    };
 }
 
 export default new Post(Config);
