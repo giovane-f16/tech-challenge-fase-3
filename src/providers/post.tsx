@@ -26,7 +26,7 @@ class Post {
     }
 
     public async getBySearch(search: string) {
-        const response = await fetch(`${this.config.getApiUrl()}/posts/search?titulo=${search}&conteudo=${search}`);
+        const response = await fetch(`${this.config.getApiUrl()}/posts/search?conteudo=${search}`);
         const data = await response.json();
         return data;
     }

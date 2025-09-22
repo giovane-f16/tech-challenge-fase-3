@@ -36,7 +36,7 @@ const Header = () => {
         const query = formData.get("search") as string;
 
         if (query.trim()) {
-            router.push(`/search?q=${encodeURIComponent(query)}`);
+            router.push(`/search?conteudo=${encodeURIComponent(query)}`);
         }
     }
 

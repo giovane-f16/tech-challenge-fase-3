@@ -39,7 +39,7 @@ export default function SearchPage({ query, results }: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const query = (context.query.q as string) || "";
+    const query = (context.query.conteudo as string) || "";
 
     console.log("Query: " + query);
 
