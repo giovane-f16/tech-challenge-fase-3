@@ -39,7 +39,7 @@ const Post = ({ post }: { post: any }) => {
                 const formData = new FormData();
                 formData.append("myImage", thumbnail);
 
-                const uploadResponse = await fetch("/api/upload", {
+                const uploadResponse = await fetch("/api/uploads/upload", {
                     method: "POST",
                     body: formData,
                 });
