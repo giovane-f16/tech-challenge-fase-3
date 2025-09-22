@@ -1,7 +1,8 @@
 import PostProvider from "@/providers/post";
 import DeleteButton from "@/components/delete";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export async function getServerSideProps(context: any) {
     const { id } = context.params;
@@ -25,7 +26,7 @@ const Post = ({ post }: { post: any }) => {
     const [titulo, setTitulo] = useState(post.titulo || "");
     const [conteudo, setConteudo] = useState(post.conteudo || "");
     const [autor, setAutor] = useState(post.autor || "");
-    const [thumbnail, setThumbnail] = useState<string | File>(post.thumbnail || "");
+    const [thumbnail, setThumbnail] = useState<string | File | null>(post.thumbnail || null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -67,70 +68,30 @@ const Post = ({ post }: { post: any }) => {
         }
     };
 
-    // Efeito para thumbnail
-    useEffect(() => {
-            const uploadBtn = document.getElementById("uploadImageBtn");
-            const featuredImage = document.getElementById("featuredImage") as HTMLInputElement;
-            const imagePreview = document.getElementById("imagePreview") as HTMLImageElement;
-            const imagePlaceholder = document.getElementById("imagePlaceholder");
-            const removeBtn = document.getElementById("removeImageBtn");
-            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-
-            if (!uploadBtn || !featuredImage || !imagePreview || !imagePlaceholder || !removeBtn || !imagePreviewContainer) return;
-
-            if (post.thumbnail) {
-                imagePreview.classList.remove("hidden");
-                imagePlaceholder.classList.add("hidden");
-                removeBtn.classList.remove("hidden");
-            }
-
-            const handleUploadClick = () => featuredImage.click();
-
-            const handleFileChange = (e: Event) => {
-                const file = (e.target as HTMLInputElement).files?.[0];
-                if (file) {
-                    setThumbnail(file);
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        imagePreview.src = event.target?.result as string;
-                        imagePreview.classList.remove("hidden");
-                        if (imagePlaceholder) imagePlaceholder.classList.add("hidden");
-                        removeBtn.classList.remove("hidden");
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-
-            const handleRemoveClick = () => {
-                imagePreview.src = "";
-                imagePreview.classList.add("hidden");
-                if (imagePlaceholder) imagePlaceholder.classList.remove("hidden");
-                removeBtn.classList.add("hidden");
-                featuredImage.value = "";
-                setThumbnail(post.thumbnail || "");
-            };
-
-            uploadBtn.addEventListener("click", handleUploadClick);
-            imagePreviewContainer.addEventListener("click", handleUploadClick);
-            featuredImage.addEventListener("change", handleFileChange);
-            removeBtn.addEventListener("click", handleRemoveClick);
-
-            // Cleanup
-            return () => {
-                uploadBtn.removeEventListener("click", handleUploadClick);
-                imagePreviewContainer.removeEventListener("click", handleUploadClick);
-                featuredImage.removeEventListener("change", handleFileChange);
-                removeBtn.removeEventListener("click", handleRemoveClick);
-            };
-    }, [post.thumbnail]);
-
     const { data: session } = useSession();
 
     if (!session) {
         return (
-            <div className="text-xl flex flex-col justify-center items-center mt-[10%]">
-                <h1 className="">Sem permissão para acessar essa página.</h1>
-                <p>Faça o <a href="/login" className="text-blue-700 hover:underline">login</a> ou <a href="/register" className="text-blue-700 hover:underline">cadastre-se!</a></p>
+            <div className="flex flex-col text-xl overflow-hidden">
+                <div className="flex flex-col justify-center items-center mt-48">
+                    <h1>Sem permissão para acessar essa página.</h1>
+                    <p>
+                        Faça o{" "}
+                        <a href="/login" className="text-blue-700 hover:underline">login</a> ou{" "}
+                        <a href="/register" className="text-blue-700 hover:underline">cadastre-se!</a>
+                    </p>
+                </div>
+
+                <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
+                    <Image
+                        src="/not-allowed.svg"
+                        alt="Imagem Not Allowed"
+                        fill
+                        priority
+                        sizes="500px"
+                        className="object-contain object-center"
+                    />
+                </div>
             </div>
         );
     }
@@ -150,29 +111,53 @@ const Post = ({ post }: { post: any }) => {
                         <div className="md:col-span-3">
                             <div className="flex items-center justify-between">
                                 <label htmlFor="featuredImage" className="block text-sm font-medium text-gray-700 mb-1">Imagem de destaque</label>
-                                <button type="button" id="removeImageBtn" className="text-sm text-red-600 hover:text-red-800 hidden cursor-pointer">Remover imagem</button>
+                                {thumbnail && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setThumbnail(null)}
+                                        className="text-sm text-red-600 hover:text-red-800 cursor-pointer"
+                                    >
+                                        Remover imagem
+                                    </button>
+                                )}
                             </div>
+
                             <div className="mt-1 flex flex-col items-center">
-                                <div id="imagePreviewContainer" className="relative w-full h-82 bg-gray-100 rounded-lg overflow-hidden mb-2 border border-dashed border-gray-300 flex items-center justify-center">
-                                    {/** @toDo: Corrigir bug da imagem na hora da edição */}
-                                    <img id="imagePreview" src={thumbnail} alt="Preview" className="hidden absolute h-full w-full object-cover" />
-                                    <div id="imagePlaceholder" className="text-center p-4">
-                                        <p className="mt-2 text-sm text-gray-600">Clique para adicionar uma imagem</p>
-                                    </div>
+                                <div
+                                    onClick={() => document.getElementById("featuredImage")?.click()}
+                                    className="relative w-full h-82 bg-gray-100 rounded-lg overflow-hidden mb-2 border border-dashed border-gray-300 flex items-center justify-center cursor-pointer"
+                                >
+                                    {thumbnail ? (
+                                        <img
+                                            src={thumbnail instanceof File ? URL.createObjectURL(thumbnail) : thumbnail}
+                                            alt="Preview"
+                                            className="absolute h-full w-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="text-center p-4">
+                                            <p className="mt-2 text-sm text-gray-600">Clique para adicionar uma imagem</p>
+                                        </div>
+                                    )}
                                 </div>
+
                                 <input
                                     type="file"
+                                    id="featuredImage"
+                                    name="myImage"
+                                    accept="image/*"
+                                    className="hidden"
                                     onChange={(e) => {
                                         if (e.target.files && e.target.files[0]) {
                                             setThumbnail(e.target.files[0]);
                                         }
                                     }}
-                                    id="featuredImage"
-                                    name="myImage"
-                                    accept="image/*"
-                                    className="hidden"
                                 />
-                                <button type="button" id="uploadImageBtn" className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+
+                                <button
+                                    type="button"
+                                    onClick={() => document.getElementById("featuredImage")?.click()}
+                                    className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer"
+                                >
                                     Selecionar Imagem
                                 </button>
                             </div>
