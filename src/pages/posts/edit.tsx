@@ -1,5 +1,6 @@
 import PostProvider from "@/providers/post";
 import DeleteButton from "@/components/delete";
+import LoaderGrid from "@/components/loader_grid";
 import { useSession } from "next-auth/react";
 
 export async function getServerSideProps() {
@@ -13,11 +14,7 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
     const { data: session, status } = useSession();
 
     if (status === "loading") {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <p>Carregando...</p>
-            </div>
-        );
+        return <LoaderGrid />;
     }
 
     if (!session) {

@@ -49,7 +49,15 @@ const Criar = () => {
         }
     }
 
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+
+    if (status === "loading") {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <p>Carregando...</p>
+            </div>
+        );
+    }
 
     if (!session) {
         return (
