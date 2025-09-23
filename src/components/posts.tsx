@@ -12,7 +12,7 @@ const Posts = ({ posts_provider }: { posts_provider: any[] }) => {
                 {posts_provider.map((post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; }) => (
                 <div className="post-card bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up" key={post._id}>
                     <a href={`/posts/${post._id}/${PostProvider.slugify(post.titulo)}`}>
-                        <img src={post.thumbnail ? post.thumbnail : "/placeholder.svg" } alt={post.titulo} title={post.titulo} className="w-full h-48 object-cover"/>
+                        <img src={post.thumbnail ? post.thumbnail : "/placeholder.svg" } alt={post.titulo} title={post.titulo} className="block w-full h-48 object-cover"/>
                     </a>
                     <div className="p-6 flex flex-col justify-between md:h-54">
                         <div className="flex justify-between items-start mb-2">
