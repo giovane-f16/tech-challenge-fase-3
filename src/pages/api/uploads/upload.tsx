@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import formidable, { File, Files, Fields } from "formidable";
 import fs from "fs";
 import { connectToDatabase } from "@/providers/mongodb";
-import { ObjectId } from "mongodb";
 
 export const config = {
     api: {
@@ -64,7 +63,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ApiResponse>) =
             createdAt: new Date(),
         });
 
-        // 🔹 monta URL amigável
         const host = req.headers.host;
         const protocol = req.headers["x-forwarded-proto"] || "http";
         const imageUrl = `${protocol}://${host}/api/uploads/${result.insertedId.toString()}-${safeName}`;

@@ -4,13 +4,12 @@ import { connectToDatabase } from "@/providers/mongodb";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { slug } = req.query; // ex.: "66f02e2b7a6d4c3f8e9a1234-foto.png"
+        const { slug } = req.query;
 
         if (!slug || Array.isArray(slug)) {
             return res.status(400).json({ message: "Slug inválido" });
         }
 
-        // 🔹 separa o ObjectId do nome
         const [id] = slug.split("-");
         if (!ObjectId.isValid(id)) {
             return res.status(400).json({ message: "ID inválido" });

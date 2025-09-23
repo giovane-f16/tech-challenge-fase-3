@@ -6,6 +6,7 @@ const Criar = () => {
     const [conteudo, setConteudo] = useState("");
     const [autor, setAutor] = useState("");
     const [thumbnail, setThumbnail] = useState<string | File | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -14,6 +15,8 @@ const Criar = () => {
             alert("Defina uma imagem de destaque.");
             return;
         }
+
+        setIsSubmitting(true);
 
         let thumbnailUrl = "";
         const formData = new FormData();
@@ -46,6 +49,8 @@ const Criar = () => {
         } catch (error) {
             console.error("Erro ao criar post:", error);
             alert("Erro ao criar post");
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -80,7 +85,7 @@ const Criar = () => {
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
-            <div className="bg-white rounded-xl shadow-md overflow-hidden p-6" data-aos="fade-up">
+            <div className="bg-white rounded-xl shadow-md overflow-hidden p-4 md:p-6" data-aos="fade-up">
                 <form id="editPostForm" className="space-y-6 h-[975px]" onSubmit={handleCreate}>
                     <div className="md:col-span-3 pt-4">
                         <div className="flex justify-between items-center">
@@ -89,8 +94,8 @@ const Criar = () => {
                                 <a href="/posts/edit" className="text-indigo-600 hover:text-indigo-800 flex items-center">
                                     Voltar
                                 </a>
-                                <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                    Publicar
+                                <button type="submit" disabled={isSubmitting} className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer disabled:bg-gray-500">
+                                    {isSubmitting ? "Publicando..." : "Publicar"}
                                 </button>
                             </div>
                         </div>
