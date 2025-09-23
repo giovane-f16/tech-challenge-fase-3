@@ -68,15 +68,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const id = params?.id as string;
-    const slug = params?.slug as string;
-
-    console.log("ID: " + id);
-    console.log("SLUG: " + slug);
-    console.log("PARAMS: " + params);
-
     const post = await PostProvider.getById(id);
-
-    console.log(post);
 
     if (!post) {
         return { notFound: true };
