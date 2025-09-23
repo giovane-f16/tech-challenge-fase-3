@@ -1,4 +1,3 @@
-import Image from "next/image";
 import PostProvider from "@/providers/post";
 import DeleteButton from "@/components/delete";
 import { useSession } from "next-auth/react";
@@ -26,14 +25,7 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                 </div>
 
                 <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
-                    <Image
-                    src="/not-allowed.svg"
-                    alt="Imagem Not Allowed"
-                    fill
-                    priority
-                    sizes="500px"
-                    className="object-contain object-center"
-                    />
+                    <img src="/not-allowed.svg" alt="Imagem Not Allowed"  className="object-contain object-center" />
                 </div>
             </div>
         );

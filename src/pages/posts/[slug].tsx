@@ -1,6 +1,5 @@
 import Posts from "@/providers/post";
 import { GetStaticProps, GetStaticPaths } from "next";
-import Image from "next/image";
 
 const formatarData = (dataString: string) => {
     const partes = dataString.split('/');
@@ -27,13 +26,7 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
             <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-7 md:p-14">
                 <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
                 <div className="mb-6 relative w-full h-[300px] md:h-[700px] rounded-xl overflow-hidden">
-                    <Image
-                        src={post.thumbnail ? post.thumbnail : "/placeholder.svg" }
-                        alt={`Thumbnail do post ${post.titulo}`}
-                        fill
-                        className="rounded-xl object-cover object-center"
-                        priority
-                    />
+                <img src={post.thumbnail ? post.thumbnail : "/placeholder.svg" } alt="{`Thumbnail do post ${post.titulo}`}" className="rounded-xl object-cover object-center" />
                 </div>
 
                 <div className="text-1xl text-gray-900 mb-6">
