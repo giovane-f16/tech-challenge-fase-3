@@ -1,4 +1,4 @@
-import Posts from "@/providers/post";
+import PostProvider from "@/providers/post";
 import { GetStaticProps, GetStaticPaths } from "next";
 
 const formatarData = (dataString: string) => {
@@ -26,7 +26,7 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
             <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-7 md:p-14">
                 <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
                 <div className="mb-6 relative w-full h-[300px] md:h-[700px] rounded-xl overflow-hidden">
-                <img src={post.thumbnail ? post.thumbnail : "/placeholder.svg" } alt="{`Thumbnail do post ${post.titulo}`}" className="rounded-xl object-cover object-center" />
+                <img src={post.thumbnail ? post.thumbnail : "/placeholder.svg" } alt={`Thumbnail do post ${post.titulo}`} className="rounded-xl object-cover object-center w-full" />
                 </div>
 
                 <div className="text-1xl text-gray-900 mb-6">
@@ -52,28 +52,39 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const posts = await Posts.getAll();
-    const slugs = posts.map((post: { titulo: string }) => Posts.slugify(post.titulo));
+    const posts = await PostProvider.getAll();
+    const paths = posts.map((post: { _id: string, titulo: string }) => ({
+        params: {
+            id: post._id,
+            slug: PostProvider.slugify(post.titulo)
+        }
+    }));
 
     return {
-        paths: slugs.map((slug: string) => ({ params: { slug } })),
+        paths: paths,
         fallback: false,
     };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const posts = await Posts.getAll();
+    const id = params?.id as string;
     const slug = params?.slug as string;
 
-    const post = posts.find(
-        (p: { titulo: string }) => Posts.slugify(p.titulo) === slug
-    );
+    console.log("ID: " + id);
+    console.log("SLUG: " + slug);
+    console.log("PARAMS: " + params);
+
+    const post = await PostProvider.getById(id);
+
+    console.log(post);
 
     if (!post) {
-        return {notFound: true};
+        return { notFound: true };
     }
 
-    return { props: { post } };
+    return {
+        props: { post }
+    }
 };
 
 export default Post;
