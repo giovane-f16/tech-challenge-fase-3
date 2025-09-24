@@ -54,7 +54,7 @@ const Edit = ({ posts_provider }: { posts_provider: any[] }) => {
                     <div className="p-6 flex flex-col justify-between md:h-54">
                         <div className="flex justify-between items-start mb-2">
                             <a href={`/posts/${post._id}/${PostProvider.slugify(post.titulo)}`}>
-                                <h2 className="text-xl font-semibold text-gray-800">{post.titulo}</h2>
+                                <h2 className="text-xl font-semibold text-gray-800">{PostProvider.truncateText(post.titulo, 50)}</h2>
                             </a>
                         </div>
                         <a href={`/posts/${post._id}/${PostProvider.slugify(post.titulo)}`}>
