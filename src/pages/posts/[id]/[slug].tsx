@@ -1,5 +1,5 @@
 import PostProvider from "@/providers/post";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetServerSideProps } from "next";
 
 const formatarData = (dataString: string) => {
     const partes = dataString.split('/');
@@ -51,22 +51,7 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
     );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const posts = await PostProvider.getAll();
-    const paths = posts.map((post: { _id: string, titulo: string }) => ({
-        params: {
-            id: post._id,
-            slug: PostProvider.slugify(post.titulo)
-        }
-    }));
-
-    return {
-        paths: paths,
-        fallback: "blocking",
-    };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const id = params?.id as string;
     const post = await PostProvider.getById(id);
 
@@ -76,7 +61,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
         props: { post }
-    }
+    };
 };
 
 export default Post;
