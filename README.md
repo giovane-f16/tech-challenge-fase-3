@@ -3,7 +3,7 @@
 Interface gráfica de blogging desenvolvida com **Next.js**, **React** e **TypeScript**, com os recursos:
 - Leitura de posts
 - Autenticação de usuários
-- Manipulação dos Posts (Criar, Editar e Excluir)
+- Manipulação de Posts (Criar, Editar e Excluir)
 - Pesquisa de posts pelo conteúdo
 
 ## Link de produção
