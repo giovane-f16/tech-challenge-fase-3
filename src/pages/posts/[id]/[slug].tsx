@@ -1,13 +1,8 @@
 import PostProvider from "@/providers/post";
 import { GetServerSideProps } from "next";
 
-const formatarData = (dataString: string) => {
-    const partes = dataString.split('/');
-    if (partes.length !== 3) {
-        return "Formato de data inválido";
-    }
-    const [dia, mes, ano] = partes.map(Number);
-    const dataObj = new Date(ano, mes - 1, dia);
+const formatarData = (data: Date | string) => {
+    const dataObj = typeof data === "string" ? new Date(data) : data;
 
     if (isNaN(dataObj.getTime())) {
         return "Data inválida";

@@ -24,7 +24,7 @@ export default function SearchPage({ query, results }: any) {
                             <p className="text-gray-600 mb-4">{PostProvider.truncateText(post.conteudo, 50)}</p>
                         </a>
                         <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-500">Publicado em: {post.data_criacao}</span>
+                            <span className="text-sm text-gray-500">Publicado em: {PostProvider.formataData(post.data_criacao)}</span>
                         </div>
                     </div>
                 </div>
