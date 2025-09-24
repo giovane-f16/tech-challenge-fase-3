@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import Config from "@/config/config";
 
 const KeepAlive = () => {
-    useEffect(() => {
+    if (typeof window === "undefined") {
         const pingServer = async () => {
             try {
                 const response = await fetch(`${Config.getApiUrl()}`);
@@ -18,12 +17,8 @@ const KeepAlive = () => {
 
         pingServer();
 
-        const intervalId = setInterval(pingServer, 50000);
-
-        return () => clearInterval(intervalId);
-    }, []);
-
-    return null;
+        setInterval(pingServer, 50_000);
+    }
 };
 
 export default KeepAlive;
