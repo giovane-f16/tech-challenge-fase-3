@@ -41,8 +41,6 @@ export default function SearchPage({ query, results }: any) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = (context.query.conteudo as string) || "";
 
-    console.log("Query: " + query);
-
     if (!query) {
         return {
             props: {
@@ -53,7 +51,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     try {
-        const results = await PostProvider.getBySearch(query);
+        let results = await PostProvider.getBySearch(query);
+
+        if (!Array.isArray(results)) {
+            results = [];
+        }
 
         return {
             props: {
