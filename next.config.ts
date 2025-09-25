@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
                 hostname: "tech-challenge-fase-3.vercel.app",
                 pathname: "/api/uploads/**",
             },
+            {
+                protocol: "http",
+                hostname: "localhost",
+                pathname: "/api/uploads/**",
+            },
         ],
     },
 };

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const Criar = () => {
     const [titulo, setTitulo] = useState("");
@@ -120,10 +121,16 @@ const Criar = () => {
                                     className="relative w-full h-82 bg-gray-100 rounded-lg overflow-hidden mb-2 border border-dashed border-gray-300 flex items-center justify-center cursor-pointer"
                                 >
                                     {thumbnail ? (
-                                        <img
+                                        <Image
                                             src={thumbnail instanceof File ? URL.createObjectURL(thumbnail) : thumbnail}
                                             alt="Preview"
-                                            className="absolute h-full w-full object-cover"
+                                            title="Preview"
+                                            fill
+                                            priority
+                                            className="object-cover absolute h-full w-full"
+                                            sizes="(max-width: 768px) 100vw,
+                                                (max-width: 1200px) 50vw,
+                                                33vw"
                                         />
                                     ) : (
                                         <div className="text-center p-4">

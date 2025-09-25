@@ -11,19 +11,19 @@ const Posts = ({ posts_provider }: { posts_provider: any[] }) => {
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts_provider.map((post: { _id: string; titulo: string; conteudo: string; autor: string; data_criacao: string; data_atualizacao?:string, thumbnail?: string; }) => (
                 <div className="post-card bg-white rounded-xl shadow-md overflow-hidden" key={post._id}>
-                        <a href={`/posts/${post._id}/${PostProvider.slugify(post.titulo)}`} className="block relative w-full h-48">
-                                <Image
-                                    src={post.thumbnail ? post.thumbnail : "/placeholder.svg"}
-                                    alt={post.titulo}
-                                    title={post.titulo}
-                                    fill
-                                    priority
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 100vw,
-                                        (max-width: 1200px) 50vw,
-                                        33vw"
-                                />
-                        </a>
+                    <a href={`/posts/${post._id}/${PostProvider.slugify(post.titulo)}`} className="block relative w-full h-48">
+                        <Image
+                            src={post.thumbnail ? post.thumbnail : "/placeholder.svg"}
+                            alt={post.titulo}
+                            title={post.titulo}
+                            fill
+                            priority
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw,
+                                (max-width: 1200px) 50vw,
+                                33vw"
+                        />
+                    </a>
                     <div className="p-6 flex flex-col justify-between md:h-54">
                         <div className="flex justify-between items-start mb-2">
                             <a href={`/posts/${post._id}/${PostProvider.slugify(post.titulo)}`}>

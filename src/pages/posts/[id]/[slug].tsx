@@ -1,5 +1,6 @@
 import PostProvider from "@/providers/post";
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 
 const formatarData = (data: Date | string) => {
     const dataObj = typeof data === "string" ? new Date(data) : data;
@@ -21,7 +22,17 @@ const Post = ({ post }: { post: { _id: string; titulo: string; conteudo: string;
             <article className="flex flex-col justify-center max-w-[1200px] mx-auto w-full p-7 md:p-14">
                 <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-7 mt-4">{post.titulo}</h1>
                 <div className="mb-6 relative w-full h-[300px] md:h-[700px] rounded-xl overflow-hidden">
-                <img src={post.thumbnail ? post.thumbnail : "/placeholder.svg" } alt={`Thumbnail do post ${post.titulo}`} className="rounded-xl object-cover h-full object-center w-full" fetchPriority="high" />
+                    <Image
+                        src={post.thumbnail ? post.thumbnail : "/placeholder.svg"}
+                        alt={post.titulo}
+                        title={post.titulo}
+                        fill
+                        priority
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw,
+                            (max-width: 1200px) 50vw,
+                            33vw"
+                    />
                 </div>
 
                 <div className="text-1xl text-gray-900 mb-6">
