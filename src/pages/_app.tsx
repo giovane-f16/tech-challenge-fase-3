@@ -3,9 +3,6 @@ import "@/styles/globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SessionProviderWrapper from "@/providers/session";
-import KeepAlive from "@/utils/keep";
-
-KeepAlive();
 
 export default function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (
