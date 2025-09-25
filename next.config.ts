@@ -5,9 +5,8 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: "http",
-                hostname: "localhost",
-                port: "3000",
+                protocol: "https",
+                hostname: "tech-challenge-fase-3.vercel.app",
                 pathname: "/api/uploads/**",
             },
         ],
