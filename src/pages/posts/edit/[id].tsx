@@ -27,13 +27,14 @@ const Post = ({ post }: { post: any }) => {
     const [conteudo, setConteudo] = useState(post.conteudo || "");
     const [autor, setAutor] = useState(post.autor || "");
     const [thumbnail, setThumbnail] = useState<string | File | null>(post.thumbnail || null);
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!id) return;
 
         let thumbnailUrl = post.thumbnail;
-
+        setIsSaving(true);
         try {
             if (thumbnail instanceof File) {
                 const formData = new FormData();
@@ -65,6 +66,8 @@ const Post = ({ post }: { post: any }) => {
         } catch (err) {
             alert("Erro ao salvar o post");
             console.error(err);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -189,8 +192,8 @@ const Post = ({ post }: { post: any }) => {
                             <div className="flex justify-between">
                                 <DeleteButton id={id} />
                                 <div className="space-x-3">
-                                    <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                        Salvar Alterações
+                                    <button type="submit" disabled={isSaving} className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer disabled:bg-gray-500">
+                                        {isSaving ? "Salvando..." : "Salvar Alterações"}
                                     </button>
                                 </div>
                             </div>
