@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
 
     return {
-        props: { post }
+        props: { post, title: `Tech Challenge - ${post.titulo}` }
     };
 };
 
